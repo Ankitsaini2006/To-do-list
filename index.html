@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List with Time</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url(https://img.freepik.com/free-vector/abstract-blue-circle-black-background-technology_1142-12714.jpg?semt=ais_hybrid&w=740);
+      color: #ffffff;
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #00bef8;
+    }
+
+    #clock {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #ffd700;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    #taskInput {
+      width: 200px;
+    }
+
+    #taskList {
+      margin-top: 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .taskItem {
+      background: #1e1e1e;
+      margin: 10px auto;
+      padding: 10px;
+      width: 300px;
+      border-left: 4px solid #00ff88;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📋 To-Do List with Time ⏰</h1>
+  <div id="clock"></div>
+
+  <input type="text" id="taskInput" placeholder="Enter task">
+  <input type="time" id="taskTime">
+  <button onclick="addTask()">Add Task</button>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    // Live Clock
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById("clock").innerText = now.toLocaleTimeString();
+    }, 1000);
+
+    // Add Task Function
+    function addTask() {
+      const taskText = document.getElementById("taskInput").value;
+      const taskTime = document.getElementById("taskTime").value;
+
+      if (!taskText || !taskTime) {
+        alert("Please enter both task and time.");
+        return;
+      }
+
+      const li = document.createElement("li");
+      li.className = "taskItem task";
+      li.innerText = `${taskText} at ${taskTime}`;
+      li.setAttribute("data-time", taskTime);
+      document.getElementById("taskList").appendChild(li);
+
+      document.getElementById("taskInput").value = "";
+      document.getElementById("taskTime").value = "";
+    }
+
+    // Reminder Checker (every 1 min)
+    setInterval(() => {
+      const now = new Date();
+      const currentTime = now.toTimeString().slice(0, 5); // "HH:MM"
+      const tasks = document.querySelectorAll(".task");
+
+      tasks.forEach(task => {
+        const time = task.getAttribute("data-time");
+        if (time === currentTime) {
+          alert("🔔 Reminder: " + task.innerText);
+        }
+      });
+    }, 60000);
+  </script>
+
+</body>
+</html>
